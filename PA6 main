@@ -12,30 +12,22 @@ import java.util.ArrayList;
 
 public class PA6 { 
 
+    //Create method to display the menu
+    
 public static ArrayList<Student> studentArray = new ArrayList<>(); 
 public static ArrayList<Course> courseArray = new ArrayList<>(); 
 public static ArrayList<Instructor> instructorArray = new ArrayList<>(); 
 
 public static void main(String[] args) { 
 
-    Scanner scanner = new Scanner(System.in);	 
-    int loop = 1; 
-    
-     //Print the menu as long as loop is not 0
-    while (loop != 0) { 
-    System.out.println("Student Management System\nPlease make a menu choice below:\n" + 
-    "------------------------------------------");
-    System.out.println("1: Create a Course"); 
-    System.out.println("2: Add student to Course"); 
-    System.out.println("3: Remove student from a Course");
-    System.out.println("4: Add Instructor to a Course");
-    System.out.println("5: Print Roster for a Course"); 
-    System.out.println("6: Quit"); 
-    System.out.print("Choice: ");  
-    
-    //Store the user's input as choice. 
-    int choice = scanner.nextInt(); 
-    scanner.nextLine(); 
+     Scanner scanner = new Scanner(System.in);
+        int loop = 1;
+
+        while (loop != 0) {
+            displayMenu();
+            System.out.print("Choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
 
     //Based on choice, call the method associated with the choice. 
     switch (choice) {
@@ -66,6 +58,18 @@ public static void main(String[] args) {
     }    
 
 } 
+
+//Method for displaying the menu
+public static void displayMenu() {
+    System.out.println("Student Management System\nPlease make a menu choice below:\n" +
+                "------------------------------------------");
+        System.out.println("1: Create a Course");
+        System.out.println("2: Add student to Course");
+        System.out.println("3: Remove student from a Course");
+        System.out.println("4: Add Instructor to a Course");
+        System.out.println("5: Print Roster for a Course");
+        System.out.println("6: Quit");
+}
 
 //New course method will add a course
 public static void newCourse() { 
@@ -111,28 +115,8 @@ public static void addStudent() {
     System.out.print("Year: ");
     int studentYear = scanner.nextInt();
     
-    //Checks if gpa is with range of 0-5
-    while(loop2!=0) {
-    System.out.print("GPA: ");
-    studentGPA = scanner.nextDouble();
-    scanner.nextLine();
-    if (studentGPA >= 0 && studentGPA <= 5) {
-        loop2 = 0;
-        } else {
-            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
-        }
-    }
-    // checks if the email contains an “@” symbol 
-    while (loop!=0) {
-    System.out.print("Email: ");
-    studentEmail = scanner.nextLine();
-    if (studentEmail.contains("@")) {
-            loop = 0;
-        } else {
-            System.out.println("Invalid email address. Please include '@'");
-        }
-    }
-        System.out.println("Please choose a class to add the student to:"); 
+    
+    System.out.println("Please choose a class to add the student to:"); 
 
     //Print all the course information and prompt user to choose the class to put the student in 
     for (int i = 0; i < courseArray.size(); i++) { 

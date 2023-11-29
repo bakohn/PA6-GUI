@@ -1,0 +1,123 @@
+/** 
+* Programmer name: Sean Vanderstelt 
+* Date Completed: 11/16/2023 
+* PA purpose: To define the Student class to add students with correct information to the management system. 
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+
+public class Student { 
+
+    private String firstName; 
+    private String lastName; 
+    private String studentYear; 
+    private String studentMajor; 
+    private double GPA; 
+    private String studentEmail; 
+    private int studentID; 
+    private static int nextStudentID = 1; 
+
+    public Student(String name, int year, String major, double GPA, String email)  
+
+    { 
+        //Did some research to learn about the split method. 
+        String[] firstandlast = name.split(" "); 
+        this.firstName = firstandlast[0]; 
+        this.lastName = firstandlast[1]; 
+         
+        this.studentID = nextStudentID; 
+        studentMajor = major; 
+        studentEmail = email; 
+        nextStudentID++; 
+
+        switch (year) { 
+            case 1: 
+                this.studentYear = "Freshman"; 
+                break; 
+            case 2: 
+                this.studentYear = "Sophomore"; 
+                break; 
+            case 3: 
+                this.studentYear = "Junior"; 
+                break; 
+            case 4: 
+                this.studentYear = "Senior"; 
+                break; 
+            default: 
+                this.studentYear = "Invalid Year";
+        }
+        
+     //GPA must be between 0 and 5 
+        if (GPA >= 0.0 && GPA <= 5.0) { 
+            this.GPA = GPA; 
+        } else { 
+            System.out.println("Error: GPA needs to be between 0.0 and 5.0!"); 
+        } 
+        //Email must contain '@' 
+        if (email.contains("@")) { 
+            this.studentEmail = email; 
+        } else { 
+            System.out.println("Error: Email needs to contain @"); 
+        }      
+    }
+
+    public void setGPA (double GPA) { 
+            this.GPA = GPA; 
+    }
+    
+    public double getGPA() { 
+        return GPA; 
+    } 
+    
+    //Combine first and last name
+    public String getName() { 
+        return firstName + " " + lastName; 
+    } 
+
+    public int getStudentID() { 
+        return studentID; 
+    } 
+
+    public void setStudentEmail(String email) { 
+            this.studentEmail = email; 
+    } 
+    
+    public String getStudentYear() { 
+        return studentYear; 
+    } 
+    
+    public void setStudentYear(int year) { 
+        switch (year) { 
+            case 1: 
+                this.studentYear = "Freshman"; 
+                break; 
+            case 2: 
+                this.studentYear = "Sophomore"; 
+                break; 
+            case 3: 
+                this.studentYear = "Junior"; 
+                break; 
+            case 4: 
+                this.studentYear = "Senior"; 
+                break; 
+            default: 
+                this.studentYear = "Invalid Year"; 
+        } 
+    } 
+
+    public String getStudentMajor() { 
+        return studentMajor; 
+    } 
+    public void setStudentMajor(String major) { 
+        studentMajor = major; 
+    } 
+    
+    //Used to dislpay student information when the printRoster method is called 
+    //in main instead of the reference to memory. 
+    @Override
+    public String toString() {
+        return "Student ID#: " + getStudentID() + " " + getName() +
+               " Major: " + getStudentMajor() + " Year: " + getStudentYear();
+    }
+
+} 

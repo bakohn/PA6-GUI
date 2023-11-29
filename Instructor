@@ -1,0 +1,68 @@
+/** 
+* Programmer name: Tyler D'Ambrosio
+* Date Completed: 11/16/2023 
+* PA purpose: To define the Instructor class to add instructors with correct information to the management system. 
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+  
+//Initializing Instructor variables 
+public class Instructor { 
+    private String name; 
+    private String prefix; 
+    private String officeLocation; 
+    private String department; 
+    private String email; 
+    private int instructorID; 
+    private int nextInstructID; 
+
+//Constructor method
+public Instructor(String name, String prefix, String officeLocation, String department, String email, int instructorID, int nextInstructID ){ 
+
+       this.name = name; 
+       this.prefix = prefix; 
+       this.officeLocation = officeLocation; 
+       this.department = department; 
+       this.email = email; 
+       if (!email.contains("@")) {//Checks if there is an @ symbol and notifies the user if there isn’t one 
+            System.out.println("Warning: Email should contain '@'"); 
+        } else { 
+            this.email = email; 
+        } 
+       this.instructorID = instructorID; 
+       this.nextInstructID = nextInstructID; 
+    } 
+     
+    public void setName(String name){ 
+        this.name = name; 
+    }  
+    
+    public String getName() { 
+        return name; 
+    } 
+
+    public void setPrefix(String prefix){ 
+        this.prefix = prefix; 
+    } 
+
+    public void setDepartment(String department){ 
+        this.department = department; 
+    } 
+
+    public void setEmail(String email){// Sets the Email of the Instructor
+            this.email = email; 
+    } 
+
+    public void setOfficeLocation(String office){//Sets the Office Location of the Instructor 
+        this.officeLocation = office; 
+    } 
+
+    public String getTitle(){ //returns the Instructors Prefix
+        return prefix; 
+    } 
+
+    @Override
+    public String toString(){//Returns a formatted string that summarizes the instructor
+        return ("Instructor: " + name + "\n" + "Department: " + department + "\n" + "Office: " + officeLocation + "\n" + "email: " + email); 
+    } 
+} 

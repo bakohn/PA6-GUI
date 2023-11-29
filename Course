@@ -1,0 +1,102 @@
+/** 
+* Programmer name: Hayden Bako
+* Date Completed: 11/16/2023 
+* PA purpose: To define the Course class to add course with correct information to the management system. 
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+
+import java.util.ArrayList;
+
+public class Course {
+    private String courseName;
+    private String courseBuilding;
+    private String courseBldgRoom;
+    private int courseCapacity;
+    private int courseID;
+    private ArrayList<Student> enrolledStudents;
+    private Instructor courseInstructor;
+    private static int nextCourseID = 0;
+
+
+    public Course(String name, String building, String room, int capacity) {
+        this.courseName = name;
+        this.courseBuilding = building;
+        this.courseBldgRoom = room;
+        this.courseCapacity = capacity;
+        this.courseID = nextCourseID++;
+        this.enrolledStudents = new ArrayList<>();
+        // default set to null because of no instructor.
+        this.courseInstructor = null;
+    }
+    
+    //checks in the student is able to be enrolled in the class
+    public void enrollStudent(Student newStudent) {
+        if(enrolledStudents.size() < courseCapacity) {
+            enrolledStudents.add(newStudent);
+        } else {
+            System.out.println("Could Not Enroll Student. Course at full Capacity");
+        }
+    }
+
+    //checks the array list to see if student IDs match, if ture, student is removed.
+    public boolean removeStudent(int studentID) {
+        for (Student student : enrolledStudents) {
+            if (student.getStudentID() == studentID) {
+                enrolledStudents.remove(student);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void assignInstructor(Instructor newInstr) {
+        this.courseInstructor = newInstr;
+    }
+
+    public void setCourseBldgRoom(String room) {
+        this.courseBldgRoom = room;
+    }
+
+    public void setCourseBuilding(String building) {
+        this.courseBuilding = building;
+    }
+
+    public void setCapacity(int newCapacity) {
+        this.courseCapacity = newCapacity;
+    }
+
+    public void setCourseName(String name) {
+        this.courseName = name;
+    }
+
+    @Override
+    public String toString() {
+    //Used StringBuilder because it is muteable, meaning it can be modified 
+    //without creating a new object.
+        StringBuilder description = new StringBuilder("Course #" + courseID + 
+            " Course: " + courseName +  " Location: " + courseBuilding + " Room: " 
+            + courseBldgRoom + " Capacity: " + courseCapacity);
+
+        if (courseInstructor != null) {
+            description.append(" Instructor of Record: ").append(courseInstructor.getName());
+        } else {
+            description.append(" Instructor of Record: None");
+        }
+        
+        return description.toString();
+    }
+    
+    //checks if course has students, and if so, returns a roster of student objects.
+    public String getRoster() {
+        if (enrolledStudents.isEmpty()) {
+            return "Course Has No Students Currently Enrolled.";
+        }
+        StringBuilder roster = new StringBuilder("Roster for " + courseName + ":\n");
+        for (Student student : enrolledStudents) {
+            roster.append(student.toString()).append("\n");
+        }
+        return roster.toString();
+    }
+
+}

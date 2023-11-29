@@ -1,0 +1,276 @@
+/** 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 11/16/2023 
+* PA purpose: Use Student, Instructor, and Course class to implement the functionality of the menu. 
+
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+
+import java.util.Scanner; 
+import java.util.ArrayList;
+
+public class PA6 { 
+
+public static ArrayList<Student> studentArray = new ArrayList<>(); 
+public static ArrayList<Course> courseArray = new ArrayList<>(); 
+public static ArrayList<Instructor> instructorArray = new ArrayList<>(); 
+
+public static void main(String[] args) { 
+
+    Scanner scanner = new Scanner(System.in);	 
+    int loop = 1; 
+    
+     //Print the menu as long as loop is not 0
+    while (loop != 0) { 
+    System.out.println("Student Management System\nPlease make a menu choice below:\n" + 
+    "------------------------------------------");
+    System.out.println("1: Create a Course"); 
+    System.out.println("2: Add student to Course"); 
+    System.out.println("3: Remove student from a Course");
+    System.out.println("4: Add Instructor to a Course");
+    System.out.println("5: Print Roster for a Course"); 
+    System.out.println("6: Quit"); 
+    System.out.print("Choice: ");  
+    
+    //Store the user's input as choice. 
+    int choice = scanner.nextInt(); 
+    scanner.nextLine(); 
+
+    //Based on choice, call the method associated with the choice. 
+    switch (choice) {
+        case 1:
+            newCourse();
+            break;
+        case 2:
+            addStudent();
+            break;
+        case 3:
+            removeStudent();
+            break;
+        case 4:
+            addInstructor();
+            break;
+        case 5:
+            printRoster();
+            break;
+        case 6:
+            //If they choose this case, end the loop
+            loop = 0;
+            System.out.println("Have a Wonderful Day!");
+            break;
+        default:
+            System.out.println("Invalid selection, Please Select a Valid Number Option.\n");
+            break;
+    }
+    }    
+
+} 
+
+//New course method will add a course
+public static void newCourse() { 
+Scanner scanner = new Scanner(System.in);
+
+    System.out.println("Creating Class. . .");
+    System.out.print("Enter Course Name: ");
+    String courseName = scanner.nextLine();
+    System.out.print("Enter Building: ");
+    String building = scanner.nextLine();
+    System.out.print("Enter Room Number: ");
+    String roomNumber = scanner.nextLine();
+
+    System.out.print("Enter Room Capacity: ");
+    int roomCapacity = scanner.nextInt();
+    
+    //Create a new Course by assigning the input values to the parameters of the course constructor.
+    Course newCourse = new Course(courseName, building, roomNumber, roomCapacity);
+    //Add the course to the arrayList
+    courseArray.add(newCourse);
+    System.out.println("Course Created.");
+} 
+
+public static void addStudent() { 
+    Scanner scanner = new Scanner(System.in);
+    // Check if there are courses available
+    if (courseArray.isEmpty()) {
+        System.out.println("No courses available. Please create a course first.\n");
+        return;
+    }
+    int loop = 1;
+    int loop2 = 1;
+    String studentEmail = "";
+    double studentGPA = 0;
+
+    System.out.println("Enter Student Information:");
+    System.out.print("Name(firstname lastname): ");
+    String studentName = scanner.nextLine();
+
+    System.out.print("Major: ");
+    String studentMajor = scanner.nextLine();
+    
+    System.out.print("Year: ");
+    int studentYear = scanner.nextInt();
+    
+    //Checks if gpa is with range of 0-5
+    while(loop2!=0) {
+    System.out.print("GPA: ");
+    studentGPA = scanner.nextDouble();
+    scanner.nextLine();
+    if (studentGPA >= 0 && studentGPA <= 5) {
+        loop2 = 0;
+        } else {
+            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
+        }
+    }
+    // checks if the email contains an “@” symbol 
+    while (loop!=0) {
+    System.out.print("Email: ");
+    studentEmail = scanner.nextLine();
+    if (studentEmail.contains("@")) {
+            loop = 0;
+        } else {
+            System.out.println("Invalid email address. Please include '@'");
+        }
+    }
+        System.out.println("Please choose a class to add the student to:"); 
+
+    //Print all the course information and prompt user to choose the class to put the student in 
+    for (int i = 0; i < courseArray.size(); i++) { 
+        System.out.println(courseArray.get(i).toString()); 
+    } 
+
+    System.out.println("------------------------------------------"); 
+    System.out.print("Choose Class #: ");    
+    int chosenClass = scanner.nextInt(); 
+    
+    //Make sure it is a valid course and add the student using enrollStudent method 
+    if (chosenClass >= 0 && chosenClass < courseArray.size()) { 
+        Course selectedCourse = courseArray.get(chosenClass); 
+        selectedCourse.enrollStudent(new Student(studentName, studentYear, studentMajor, studentGPA, studentEmail)); 
+        System.out.println("Student added to the course."); 
+    } else { 
+        System.out.println("Invalid Course Choice"); 
+    } 
+    System.out.println(); 
+}  
+
+public static void removeStudent() { 
+ Scanner scanner = new Scanner(System.in); 
+ //Checks if there are course available
+ if (courseArray.isEmpty()) {
+        System.out.println("No courses available. Please create a course first.\n");
+        return; 
+    }
+
+    System.out.println("Please choose a class to remove a student from:"); 
+    
+    //Display the classes like in previous method 
+    for (int i = 0; i < courseArray.size(); i++) { 
+        System.out.println(courseArray.get(i).toString()); 
+    } 
+
+    System.out.println("------------------------------------------"); 
+    System.out.print("Choose Class #: ");
+    
+    int courseChoice = scanner.nextInt();
+    //Make sure course choice is valid, print roster and allow user to remove student 
+    if (courseChoice >= 0 && courseChoice < courseArray.size()) { 
+        Course selectedCourse = courseArray.get(courseChoice); 
+        System.out.println(selectedCourse.getRoster()); 
+        System.out.print("Enter Student ID to remove: "); 
+        int studentID = scanner.nextInt(); 
+        
+        //Make sure the student is in the course and remove them 
+        if (selectedCourse.removeStudent(studentID)) { 
+            System.out.println("Student Successfully Removed!"); 
+        } else { 
+            System.out.println("Student not found in the course."); 
+        } 
+    } else { 
+        System.out.println("Invalid Course Choice"); 
+    }
+    System.out.println(); 
+} 
+
+public static void addInstructor() { 
+    Scanner scanner = new Scanner(System.in); 
+    //Checks if there are course available
+ if (courseArray.isEmpty()) {
+        System.out.println("No courses available. Please create a course first.\n");
+        return; 
+    }
+    int loop = 1;
+    String instructorEmail = "";
+
+    System.out.println("Enter Instructor Information: "); 
+    System.out.print("Name: "); 
+    String instructorName = scanner.nextLine(); 
+    System.out.print("Prefix: "); 
+    String instructorPrefix = scanner.nextLine(); 
+    System.out.print("Office: "); 
+    String instructorOffice = scanner.nextLine();
+    System.out.print("Department: "); 
+    String instructorDepartment = scanner.nextLine(); 
+    // checks if the email contains an “@” symbol 
+    while (loop!=0) {
+        System.out.print("Email: "); 
+        instructorEmail = scanner.nextLine(); 
+        if (instructorEmail.contains("@")) {
+            loop = 0;
+        } else {
+            System.out.println("Invalid email address. Please include '@'");
+        }
+    }
+ 
+    //Use input as parameters to create instructor instance using constructor. 
+    Instructor newInstructor = new Instructor(instructorName, instructorPrefix, instructorOffice, instructorDepartment, instructorEmail, instructorArray.size(), instructorArray.size() + 1); 
+    instructorArray.add(newInstructor); 
+    System.out.println("\nPlease Choose a Class:"); 
+    
+    //Display classes 
+    for (int i = 0; i < courseArray.size(); i++) { 
+        System.out.println(courseArray.get(i).toString()); 
+    } 
+    System.out.println("------------------------------------------"); 
+    System.out.print("Choose Class #: ");
+    int chosenClass = scanner.nextInt();
+    
+    //Add instructor to the class if valid course 
+    if (chosenClass >= 0 && chosenClass < courseArray.size()) { 
+        Course selectedCourse = courseArray.get(chosenClass); 
+        selectedCourse.assignInstructor(newInstructor); 
+        System.out.println("Instructor added to the course."); 
+    } else { 
+        System.out.println("Invalid Course Choice"); 
+    }
+    System.out.println(); 
+}
+
+public static void printRoster() { 
+ Scanner scanner = new Scanner(System.in); 
+ //Checks if there are course available
+ if (courseArray.isEmpty()) {
+        System.out.println("No courses available. Please create a course first.\n");
+        return; 
+    }
+ 
+    System.out.println("Please choose a class to print the roster:"); 
+    //Display the courses 
+    for (int i = 0; i < courseArray.size(); i++) { 
+        System.out.println("Course #" + i + ": " + courseArray.get(i).toString()); 
+    } 
+    
+    System.out.println("------------------------------------------"); 
+    System.out.print("Choose Class #: "); 
+    int courseChoice = scanner.nextInt(); 
+    
+    //Make sure course choice is valid and print the roster. 
+    if (courseChoice >= 0 && courseChoice < courseArray.size()) { 
+        Course selectedCourse = courseArray.get(courseChoice); 
+        System.out.println(selectedCourse.getRoster()); 
+    } else { 
+        System.out.println("Invalid Course Choice"); 
+    }
+    System.out.println(); 
+} 
+} 

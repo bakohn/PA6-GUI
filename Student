@@ -1,5 +1,5 @@
 /** 
-* Programmer name: Sean Vanderstelt 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
 * Date Completed: 11/16/2023 
 * PA purpose: To define the Student class to add students with correct information to the management system. 
 * My submission of this program indicates that I have neither received nor given  
@@ -15,18 +15,33 @@ public class Student {
     private double GPA; 
     private String studentEmail; 
     private int studentID; 
-    private static int nextStudentID = 1; 
+    private static int nextStudentID = 100; 
 
     public Student(String name, int year, String major, double GPA, String email)  
 
     { 
         //Did some research to learn about the split method. 
+        //Do not use methods in constructor, find a different way to split.
         String[] firstandlast = name.split(" "); 
         this.firstName = firstandlast[0]; 
         this.lastName = firstandlast[1]; 
          
         this.studentID = nextStudentID; 
         studentMajor = major; 
+        
+        if (GPA >= 0 && GPA <= 5) {
+            this.GPA = GPA;
+        } else {
+            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
+        }
+        
+        if (email.contains('@')) {
+            this.email = email;
+        } else {
+            System.out.println("Invalid input. Please enter email with @");
+        }
+    }
+        
         studentEmail = email; 
         nextStudentID++; 
 
@@ -45,24 +60,16 @@ public class Student {
                 break; 
             default: 
                 this.studentYear = "Invalid Year";
-        }
-        
-     //GPA must be between 0 and 5 
-        if (GPA >= 0.0 && GPA <= 5.0) { 
-            this.GPA = GPA; 
-        } else { 
-            System.out.println("Error: GPA needs to be between 0.0 and 5.0!"); 
+
         } 
-        //Email must contain '@' 
-        if (email.contains("@")) { 
-            this.studentEmail = email; 
-        } else { 
-            System.out.println("Error: Email needs to contain @"); 
-        }      
     }
 
     public void setGPA (double GPA) { 
-            this.GPA = GPA; 
+        if (GPA >= 0 && GPA <= 5) {
+            this.GPA = GPA;
+        } else {
+            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
+        }
     }
     
     public double getGPA() { 
@@ -79,7 +86,11 @@ public class Student {
     } 
 
     public void setStudentEmail(String email) { 
-            this.studentEmail = email; 
+        if (email.contains('@')) {
+            this.email = email;
+        } else {
+            System.out.println("Invalid input. Please enter email with @");
+        } 
     } 
     
     public String getStudentYear() { 
@@ -121,3 +132,5 @@ public class Student {
     }
 
 } 
+
+ 

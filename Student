@@ -17,7 +17,7 @@ public class Student {
     private int studentID; 
     private static int nextStudentID = 100; 
 
-    public Student(String name, int year, String major, double GPA, String email)  
+    public Student(String name, String year, String major, double GPA, String email)  
 
     { 
         //Did some research to learn about the split method. 
@@ -45,23 +45,23 @@ public class Student {
         studentEmail = email; 
         nextStudentID++; 
 
-        switch (year) { 
-            case 1: 
-                this.studentYear = "Freshman"; 
-                break; 
-            case 2: 
-                this.studentYear = "Sophomore"; 
-                break; 
-            case 3: 
-                this.studentYear = "Junior"; 
-                break; 
-            case 4: 
-                this.studentYear = "Senior"; 
-                break; 
-            default: 
-                this.studentYear = "Invalid Year";
+        // switch (year) { 
+           // case 1: 
+                // this.studentYear = "Freshman"; 
+                // break; 
+            // case 2: 
+                // this.studentYear = "Sophomore"; 
+                // break; 
+            // case 3: 
+                // this.studentYear = "Junior"; 
+                // break; 
+            // case 4: 
+                // this.studentYear = "Senior"; 
+                // break; 
+            // default: 
+                // this.studentYear = "Invalid Year";
 
-        } 
+        // } 
     }
 
     public void setGPA (double GPA) { 

@@ -131,6 +131,9 @@ public class App extends Application {
             // Create a Course object and add it to the ArrayList
             Course course = new Course(name, building, room, capacity);
             courseList.add(course);
+            
+            // Update the ComboBox with the new student names
+            chooseCourseComboBox.setItems(FXCollections.observableArrayList(getCourseNames()));
 
             // Clear the fields for the next entry
             courseNameTextField.clear();
@@ -229,6 +232,9 @@ public class App extends Application {
             // Create an Instructor object and add it to the ArrayList
             Instructor instructor = new Instructor(name, prefix, officeLocation, department, email, 199, 200);
             instructorList.add(instructor);
+            
+            // Update the ComboBox with the new student names
+            chooseInstructorComboBox.setItems(FXCollections.observableArrayList(getInstructorNames()));
 
             // Clear the fields for the next entry
             instructorNameTextField.clear();

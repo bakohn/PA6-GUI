@@ -1,3 +1,5 @@
+package hnb.studentmanagement;
+
 /** 
 * Programmer name: Hayden Bako
 * Date Completed: 11/16/2023 
@@ -68,6 +70,10 @@ public class Course {
 
     public void setCourseName(String name) {
         this.courseName = name;
+    }
+    
+    public String getName() {
+        return courseName;
     }
 
     @Override

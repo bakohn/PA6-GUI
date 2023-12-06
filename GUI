@@ -1,25 +1,73 @@
-package sv.shenandoah;
+package hnb.studentmanagement;
 
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.RadioButton;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+// import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class App extends Application {
+    private Course selectedCourse;
     private ArrayList<Student> studentList = new ArrayList<>();
     private ArrayList<Instructor> instructorList = new ArrayList<>();
     private ArrayList<Course> courseList = new ArrayList<>();
+    
+    // Helper method to get student names in "last name, first name" format
+    private List<String> getStudentNames() {
+        List<String> studentNames = new ArrayList<>();
+    
+        for (Student student : studentList) {
+            studentNames.add(student.getName());
+        }
+
+        return studentNames;
+    }
+    
+    private List<String> getCourseNames() {
+    List<String> courseNames = new ArrayList<>();
+
+    for (Course course : courseList) {
+        courseNames.add(course.getName());
+    }
+
+    return courseNames;
+    }
+    
+    private List<String> getInstructorNames() {
+    List<String> instructorNames = new ArrayList<>();
+
+    for (Instructor instructor : instructorList) {
+        instructorNames.add(instructor.getName());
+    }
+
+    return instructorNames;
+    }
+
 
     @Override
     public void start(Stage stage) {
+        
+        // Create toggle group for student operations
+        ToggleGroup studentToggleGroup = new ToggleGroup();
+
+        // Create radio buttons for student operations
+        RadioButton addStudentRadioButton = new RadioButton("Add Student");
+        addStudentRadioButton.setToggleGroup(studentToggleGroup);
+        addStudentRadioButton.setSelected(true);
+
+        RadioButton removeStudentRadioButton = new RadioButton("Remove Student");
+        removeStudentRadioButton.setToggleGroup(studentToggleGroup);
+        
         // Create labels for student view
-        Label studentTitleLabel = new Label("Add Student");
+        Label studentTitleLabel = new Label("Add Student:");
         Label studentNameLabel = new Label("Name:");
         Label studentYearLabel = new Label("Year:");
         Label studentMajorLabel = new Label("Major:");
@@ -35,13 +83,13 @@ public class App extends Application {
         TextField studentEmailTextField = new TextField();
 
         // Create save button for student view
-        Button studentSaveButton = new Button("Add Student");
+        Button studentSaveButton = new Button("Add Student ->");
         studentSaveButton.setOnAction(event -> {
             // Capture the entered information
             String name = studentNameTextField.getText();
             String year = studentYearComboBox.getValue();
             String major = studentMajorTextField.getText();
-            double gpa = Double.parseDouble(studentGPATextField.getText()); // Assuming GPA is a double
+            double gpa = Double.parseDouble(studentGPATextField.getText());
             String email = studentEmailTextField.getText();
 
             // Create a Student object and add it to the ArrayList
@@ -57,46 +105,103 @@ public class App extends Application {
         });
 
         // Create labels for course view
-        Label courseTitleLabel = new Label("Add Course");
+        Label courseTitleLabel = new Label("Add Course:");
         Label courseNameLabel = new Label("Name:");
         Label courseBuildingLabel = new Label("Building:");
         Label courseRoomLabel = new Label("Room:");
         Label courseCapacityLabel = new Label("Capacity:");
-        Label courseInstructorLabel = new Label("Instructor:");
 
         // Create text fields for course view
         TextField courseNameTextField = new TextField();
-        TextField courseBuildingTextField = new TextField();
+        ComboBox<String> courseBuildingComboBox = new ComboBox<>(FXCollections.observableArrayList("Showker", "Chandler", "Buress Hall"));
+        courseBuildingComboBox.setPromptText("Select Building"); // Set default prompt text
         TextField courseRoomTextField = new TextField();
         TextField courseCapacityTextField = new TextField();
-        ComboBox<Instructor> courseInstructorComboBox = new ComboBox<>(FXCollections.observableArrayList(instructorList));
-        courseInstructorComboBox.setPromptText("Select Instructor");
 
         // Create save button for course view
-        Button courseSaveButton = new Button("Add Course");
+        Button courseSaveButton = new Button("Add Course ->");
         courseSaveButton.setOnAction(event -> {
             // Capture the entered information
             String name = courseNameTextField.getText();
-            String building = courseBuildingTextField.getText();
+            String building = courseBuildingComboBox.getValue();
             String room = courseRoomTextField.getText();
-            int capacity = Integer.parseInt(courseCapacityTextField.getText()); // Assuming capacity is an integer
-            Instructor instructor = courseInstructorComboBox.getValue();
+            int capacity = Integer.parseInt(courseCapacityTextField.getText()); 
 
             // Create a Course object and add it to the ArrayList
             Course course = new Course(name, building, room, capacity);
-            course.assignInstructor(instructor);
             courseList.add(course);
 
             // Clear the fields for the next entry
             courseNameTextField.clear();
-            courseBuildingTextField.clear();
+            courseBuildingComboBox.getSelectionModel().clearSelection();
             courseRoomTextField.clear();
             courseCapacityTextField.clear();
-            courseInstructorComboBox.getSelectionModel().clearSelection();
         });
+        
+        // Create labels for edit course view
+        Label editCourseTitleLabel = new Label("Edit a Course:");
+
+        // Create radio buttons for edit course operations
+        RadioButton addStudentToCourseRadioButton = new RadioButton("Add Student");
+        addStudentToCourseRadioButton.setToggleGroup(studentToggleGroup);
+        addStudentToCourseRadioButton.setSelected(true);
+
+        RadioButton removeStudentFromCourseRadioButton = new RadioButton("Remove Student");
+        removeStudentFromCourseRadioButton.setToggleGroup(studentToggleGroup);
+
+        // Create label for "Choose Student"
+        Label chooseStudentLabel = new Label("Choose Student:");
+        ComboBox<String> chooseStudentComboBox = new ComboBox<String>(FXCollections.observableArrayList(getStudentNames()));
+        chooseStudentComboBox.setPromptText("Select Student");
+
+        // Create label for "Choose Course"
+        Label chooseCourseLabel = new Label("Choose Course:");
+        ComboBox<String> chooseCourseComboBox = new ComboBox<String>(FXCollections.observableArrayList(getCourseNames()));
+        chooseCourseComboBox.setPromptText("Select Course");
+        
+        // Create checkbox for "New Instructor?"
+        CheckBox newInstructorCheckBox = new CheckBox("New Instructor?");
+        
+        // Create label for "Choose Instructor"
+        Label chooseInstructorLabel = new Label("Choose Instructor:");
+        ComboBox<String> chooseInstructorComboBox = new ComboBox<>(FXCollections.observableArrayList(getInstructorNames()));
+        chooseInstructorComboBox.setPromptText("Select Instructor");
+        
+        // Add a TextArea for displaying course and student information
+        TextArea courseAndStudentInfoTextArea = new TextArea();
+        courseAndStudentInfoTextArea.setEditable(false); // Make it read-only
+
+        // Create save button for edit course view
+        Button editCourseSaveButton = new Button("Save Changes");
+        editCourseSaveButton.setOnAction(event -> {
+        // Obtain the selected course name from the combo box
+        String selectedCourseName = chooseCourseComboBox.getValue();
+
+    // Find the corresponding Course object in the courseList
+    for (Course course : courseList) {
+        if (course.getName().equals(selectedCourseName)) {
+            selectedCourse = course;
+            break;
+        }
+    }
+
+    if (selectedCourse != null) {
+        String courseInfo = selectedCourse.toString();
+            String studentInfo = selectedCourse.getRoster(); 
+
+        // Populate the TextArea
+        courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo);
+    } else {
+        // Handle the case when no course is selected
+        courseAndStudentInfoTextArea.setText("No course selected.");
+    }
+
+    // Clear the fields for the next operation
+    chooseStudentComboBox.getSelectionModel().clearSelection();
+});
 
         // Create labels for instructor view
-        Label instructorTitleLabel = new Label("Add Instructor");
+        Label instructorTitleLabel = new Label("Add Instructor:");
         Label instructorNameLabel = new Label("Name:");
         Label instructorPrefixLabel = new Label("Prefix:");
         Label instructorDepartmentLabel = new Label("Department:");
@@ -105,17 +210,18 @@ public class App extends Application {
 
         // Create text fields for instructor view
         TextField instructorNameTextField = new TextField();
-        TextField instructorPrefixTextField = new TextField();
+        ComboBox<String> instructorPrefixComboBox = new ComboBox<>(FXCollections.observableArrayList("Dr.","Prof.", "Ms.", "Mrs.", "Mr."));
+        instructorPrefixComboBox.setPromptText("Select Prefix");
         TextField instructorDepartmentTextField = new TextField();
         TextField instructorOfficeTextField = new TextField();
         TextField instructorEmailTextField = new TextField();
 
         // Create save button for instructor view
-        Button instructorSaveButton = new Button("Add Instructor");
+        Button instructorSaveButton = new Button("Add Instructor ->");
         instructorSaveButton.setOnAction(event -> {
             // Capture the entered information
             String name = instructorNameTextField.getText();
-            String prefix = instructorPrefixTextField.getText();
+            String prefix = instructorPrefixComboBox.getValue();
             String department = instructorDepartmentTextField.getText();
             String officeLocation = instructorOfficeTextField.getText();
             String email = instructorEmailTextField.getText();
@@ -126,7 +232,7 @@ public class App extends Application {
 
             // Clear the fields for the next entry
             instructorNameTextField.clear();
-            instructorPrefixTextField.clear();
+            instructorPrefixComboBox.getSelectionModel().clearSelection();
             instructorDepartmentTextField.clear();
             instructorOfficeTextField.clear();
             instructorEmailTextField.clear();
@@ -150,35 +256,55 @@ public class App extends Application {
         gridPane.add(studentGPATextField, 1, 4);
         gridPane.add(studentEmailLabel, 0, 5);
         gridPane.add(studentEmailTextField, 1, 5);
-        gridPane.add(studentSaveButton, 0, 6, 2, 1);
+        gridPane.add(studentSaveButton, 1, 6, 1, 1); 
 
         // Add course view components to the grid
         gridPane.add(courseTitleLabel, 2, 0);
         gridPane.add(courseNameLabel, 2, 1);
         gridPane.add(courseNameTextField, 3, 1);
         gridPane.add(courseBuildingLabel, 2, 2);
-        gridPane.add(courseBuildingTextField, 3, 2);
+        gridPane.add(courseBuildingComboBox, 3, 2);
         gridPane.add(courseRoomLabel, 2, 3);
         gridPane.add(courseRoomTextField, 3, 3);
         gridPane.add(courseCapacityLabel, 2, 4);
         gridPane.add(courseCapacityTextField, 3, 4);
-        gridPane.add(courseInstructorLabel, 2, 5);
-        gridPane.add(courseInstructorComboBox, 3, 5);
-        gridPane.add(courseSaveButton, 2, 6, 2, 1);
+        gridPane.add(courseSaveButton, 3, 5, 1, 1); 
 
         // Add instructor view components to the grid
         gridPane.add(instructorTitleLabel, 4, 0);
         gridPane.add(instructorNameLabel, 4, 1);
-                gridPane.add(instructorNameTextField, 5, 1);
+        gridPane.add(instructorNameTextField, 5, 1);
         gridPane.add(instructorPrefixLabel, 4, 2);
-        gridPane.add(instructorPrefixTextField, 5, 2);
+        gridPane.add(instructorPrefixComboBox, 5, 2);
         gridPane.add(instructorDepartmentLabel, 4, 3);
         gridPane.add(instructorDepartmentTextField, 5, 3);
         gridPane.add(instructorOfficeLabel, 4, 4);
         gridPane.add(instructorOfficeTextField, 5, 4);
         gridPane.add(instructorEmailLabel, 4, 5);
         gridPane.add(instructorEmailTextField, 5, 5);
-        gridPane.add(instructorSaveButton, 4, 6, 2, 1);
+        gridPane.add(instructorSaveButton, 5, 6, 1, 1);
+
+        // Add edit course view components to the grid
+        gridPane.add(editCourseTitleLabel, 0, 7);
+        gridPane.add(addStudentToCourseRadioButton, 0, 8);
+        gridPane.add(removeStudentFromCourseRadioButton, 1, 8);
+        gridPane.add(chooseStudentLabel, 0, 9);
+        gridPane.add(chooseStudentComboBox, 1, 9);
+        gridPane.add(chooseCourseLabel, 0, 10);
+        gridPane.add(chooseCourseComboBox, 1, 10);
+        gridPane.add(newInstructorCheckBox, 0, 11); 
+        gridPane.add(chooseInstructorLabel, 0, 12);
+        gridPane.add(chooseInstructorComboBox, 1, 12);
+        gridPane.add(editCourseSaveButton, 0, 13, 1, 1); 
+        
+        // Add TextArea to display course and student information
+        gridPane.add(courseAndStudentInfoTextArea, 2, 9, 1, 7);       
+        // Update the editCourseSaveButton action to populate the TextArea
+        editCourseSaveButton.setOnAction(event -> {
+        String courseInfo = selectedCourse.toString();
+        String studentInfo = selectedCourse.getRoster(); 
+        courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo);
+        });
 
         // Create the scene
         Scene scene = new Scene(gridPane, 1000, 400);
@@ -197,4 +323,3 @@ public class App extends Application {
         launch(args);
     }
 }
-

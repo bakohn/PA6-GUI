@@ -1,4 +1,4 @@
-package hnb.studentmanagement;
+package TMD;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -6,6 +6,9 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -170,6 +173,13 @@ public class App extends Application {
         Label chooseInstructorLabel = new Label("Choose Instructor:");
         chooseInstructorComboBox = new ComboBox<>();
         chooseInstructorComboBox.setPromptText("Select Instructor");
+        chooseInstructorComboBox.setDisable(true); //Stops you from accessing the ComboBox until check the checkbox
+        
+        newInstructorCheckBox.setOnAction(event -> {
+            // Enable or disable ComboBox based on the checkbox state
+            chooseInstructorComboBox.setDisable(!newInstructorCheckBox.isSelected());
+        });
+      
         
         // Add a TextArea for displaying course and student information
         TextArea courseAndStudentInfoTextArea = new TextArea();

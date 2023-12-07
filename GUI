@@ -72,13 +72,17 @@ public class App extends Application {
     private TextField instructorOfficeTextField;
     private TextField instructorEmailTextField;
     
+    private boolean isValidEmail(String email) {
+    return email.contains("@");
+}
+    
     // Method used to check if the boxes are filled before you can click the add student button
     private void validateAndEnableButton(Button button) {
         boolean isFilled = !studentNameTextField.getText().isEmpty() &&
                 studentYearComboBox.getValue() != null &&
                 !studentMajorTextField.getText().isEmpty() &&
                 !studentGPATextField.getText().isEmpty() &&
-                !studentEmailTextField.getText().isEmpty();
+                isValidEmail(studentEmailTextField.getText());
 
         button.setDisable(!isFilled);
     }
@@ -99,7 +103,7 @@ public class App extends Application {
                 instructorPrefixComboBox.getValue() != null &&
                 !instructorDepartmentTextField.getText().isEmpty() &&
                 !instructorOfficeTextField.getText().isEmpty() &&
-                !instructorEmailTextField.getText().isEmpty();
+                isValidEmail(instructorEmailTextField.getText());
 
         button.setDisable(!isFilled);
     }

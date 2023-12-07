@@ -1,4 +1,4 @@
-package TMD;
+package sv.shenandoah;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -17,13 +17,21 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 
+/** 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 12/7/2023 
+* PA purpose: To define the Student class to add students with correct information to the management system. 
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+
 public class App extends Application {
     private Course selectedCourse;
     private ArrayList<Student> studentList = new ArrayList<>();
     private ArrayList<Instructor> instructorList = new ArrayList<>();
     private ArrayList<Course> courseList = new ArrayList<>();
 
-    // Helper method to get student names in "last name, first name" format
+    //get student names in "last name, first name" format
     private List<String> getStudentNames() {
         List<String> studentNames = new ArrayList<>();   
         for (Student student : studentList) {
@@ -32,6 +40,7 @@ public class App extends Application {
         return studentNames;
     }
     
+    //Get the course names
     private List<String> getCourseNames() {
         List<String> courseNames = new ArrayList<>();
         for (Course course : courseList) {
@@ -40,6 +49,7 @@ public class App extends Application {
         return courseNames;
     }
     
+    //Get the instructor names
     private List<String> getInstructorNames() {
         List<String> instructorNames = new ArrayList<>();
         for (Instructor instructor : instructorList) {
@@ -48,9 +58,10 @@ public class App extends Application {
         return instructorNames;
     }
     
+    //Create a combo box for each class type
     private ComboBox<String> chooseStudentComboBox;
-    private ComboBox<String> chooseInstructorComboBox;  // Declare chooseInstructorComboBox as a class variable
-    private ComboBox<String> chooseCourseComboBox;       // Declare chooseCourseComboBox as a class variable
+    private ComboBox<String> chooseInstructorComboBox;  
+    private ComboBox<String> chooseCourseComboBox;       
     
     // Instance variables for the Student form
     private TextField studentNameTextField;
@@ -72,6 +83,7 @@ public class App extends Application {
     private TextField instructorOfficeTextField;
     private TextField instructorEmailTextField;
     
+    //Method to check if email has '@'
     private boolean isValidEmail(String email) {
     return email.contains("@");
 }
@@ -187,7 +199,7 @@ public class App extends Application {
         // Create text fields for course view
         this.courseNameTextField = new TextField();
         this.courseBuildingComboBox = new ComboBox<>(FXCollections.observableArrayList("Showker", "Chandler", "Buress Hall"));
-        courseBuildingComboBox.setPromptText("Select Building"); // Set default prompt text
+        courseBuildingComboBox.setPromptText("Select Building");
         this.courseRoomTextField = new TextField();
         this.courseCapacityTextField = new TextField();
 
@@ -250,7 +262,8 @@ public class App extends Application {
         Label chooseInstructorLabel = new Label("Choose Instructor:");
         chooseInstructorComboBox = new ComboBox<>();
         chooseInstructorComboBox.setPromptText("Select Instructor");
-        chooseInstructorComboBox.setDisable(true); //Stops you from accessing the ComboBox until check the checkbox
+        //Stops you from accessing the ComboBox until check the checkbox
+        chooseInstructorComboBox.setDisable(true); 
         
         newInstructorCheckBox.setOnAction(event -> {
             // Enable or disable ComboBox based on the checkbox state
@@ -260,7 +273,7 @@ public class App extends Application {
         
         // Add a TextArea for displaying course and student information
         TextArea courseAndStudentInfoTextArea = new TextArea();
-        courseAndStudentInfoTextArea.setEditable(false); // Make it read-only
+        courseAndStudentInfoTextArea.setEditable(false); 
 
         // Create save button for edit course view
         Button editCourseSaveButton = new Button("Save Changes");
@@ -432,5 +445,9 @@ public class App extends Application {
   
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public void stop() {
+        
     }
 }

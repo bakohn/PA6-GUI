@@ -1,0 +1,71 @@
+To print a roster of a certain class to a label in your existing code, you need to add functionality that retrieves the selected course from the combo box and then fetches and displays its roster. Below is an updated version of your start method that includes this functionality:
+
+Copy code
+@Override
+public void start(Stage stage) {
+    // ... your existing code ...
+
+    // Create the layout
+    GridPane gridPane = new GridPane();
+    gridPane.setHgap(20);
+    gridPane.setVgap(10);
+    gridPane.setAlignment(Pos.CENTER);
+
+    // ... your existing code ...
+
+    // Create a label to display the roster
+    Label rosterLabel = new Label("Roster:");
+    gridPane.add(rosterLabel, 3, 8);
+
+    // Add a TextArea for displaying the course roster
+    TextArea courseRosterTextArea = new TextArea();
+    courseRosterTextArea.setEditable(false); // Make it read-only
+    gridPane.add(courseRosterTextArea, 3, 9, 3, 9);
+
+    // Create a button to display the roster
+    Button displayRosterButton = new Button("Display Roster");
+    gridPane.add(displayRosterButton, 3, 18);
+
+    // Event handling for the display roster button
+    displayRosterButton.setOnAction(event -> {
+        String selectedCourseName = chooseCourseComboBox.getValue();
+
+        // Find the corresponding Course object in the courseList
+        Course selectedCourse = null;
+        for (Course course : courseList) {
+            if (course.getName().equals(selectedCourseName)) {
+                selectedCourse = course;
+                break;
+            }
+        }
+
+        if (selectedCourse != null) {
+            // Display the roster in the TextArea
+            String roster = selectedCourse.getRoster();
+            courseRosterTextArea.setText(roster);
+        } else {
+            // Handle the case when no course is selected
+            courseRosterTextArea.setText("No course selected.");
+        }
+    });
+
+    // ... your existing code ...
+
+    // Set the scene to the stage
+    Scene scene = new Scene(gridPane, 1000, 600);
+    stage.setScene(scene);
+
+    // Set the title of the stage
+    stage.setTitle("Information Management");
+
+    // Show the stage
+    stage.show();
+}
+In this code, a new Label named rosterLabel and a TextArea named courseRosterTextArea are added to the grid. Additionally, a Button named displayRosterButton is created. The event handler for this button retrieves the selected course from the combo box, finds the corresponding Course object in the courseList, and displays the roster in the courseRosterTextArea.
+
+You can further customize the appearance and placement of these components based on your design preferences. This example assumes that the Course class has a getRoster method that returns the roster information as a string. Make sure to replace it with the appropriate method in your actual Course class.
+
+
+
+
+

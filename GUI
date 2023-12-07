@@ -52,6 +52,24 @@ public class App extends Application {
     private ComboBox<String> chooseInstructorComboBox;  // Declare chooseInstructorComboBox as a class variable
     private ComboBox<String> chooseCourseComboBox;       // Declare chooseCourseComboBox as a class variable
     
+    // Instance variables
+    private TextField studentNameTextField;
+    private ComboBox<String> studentYearComboBox;
+    private TextField studentMajorTextField;
+    private TextField studentGPATextField;
+    private TextField studentEmailTextField;
+    
+    // Method used to check if the boxes are filled before you can click the add student button
+    private void validateAndEnableButton(Button button) {
+        boolean isFilled = !studentNameTextField.getText().isEmpty() &&
+                studentYearComboBox.getValue() != null &&
+                !studentMajorTextField.getText().isEmpty() &&
+                !studentGPATextField.getText().isEmpty() &&
+                !studentEmailTextField.getText().isEmpty();
+
+        button.setDisable(!isFilled);
+    }
+    
     @Override
     public void start(Stage stage) {
         
@@ -75,15 +93,25 @@ public class App extends Application {
         Label studentEmailLabel = new Label("Email:");
 
         // Create text fields for student view
-        TextField studentNameTextField = new TextField();
-        ComboBox<String> studentYearComboBox = new ComboBox<>(FXCollections.observableArrayList("Freshman", "Sophomore", "Junior", "Senior"));
+        this.studentNameTextField = new TextField();
+        this.studentYearComboBox = new ComboBox<>(FXCollections.observableArrayList("Freshman", "Sophomore", "Junior", "Senior"));
         studentYearComboBox.setPromptText("Select Year");
-        TextField studentMajorTextField = new TextField();
-        TextField studentGPATextField = new TextField();
-        TextField studentEmailTextField = new TextField();
+        this.studentMajorTextField = new TextField();
+        this.studentGPATextField = new TextField();
+        this.studentEmailTextField = new TextField();
 
         // Create save button for student view
         Button studentSaveButton = new Button("Add Student ->");
+        studentSaveButton.setDisable(true);
+        
+        // Event handling for validation
+        this.studentNameTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableButton(studentSaveButton));
+        this.studentMajorTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableButton(studentSaveButton));
+        this.studentGPATextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableButton(studentSaveButton));
+        this.studentEmailTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableButton(studentSaveButton));
+        this.studentYearComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateAndEnableButton(studentSaveButton));
+
+        
         studentSaveButton.setOnAction(event -> {
         // Capture the entered information
         String name = studentNameTextField.getText();
@@ -105,6 +133,9 @@ public class App extends Application {
     studentMajorTextField.clear();
     studentGPATextField.clear();
     studentEmailTextField.clear();
+    
+    // Disable the button again after submission
+        studentSaveButton.setDisable(true);
 });
 
 
@@ -338,7 +369,10 @@ public class App extends Application {
 
         // Show the stage
         stage.show();
+        
+        
     }
+    
   
     public static void main(String[] args) {
         launch(args);

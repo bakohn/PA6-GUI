@@ -52,12 +52,25 @@ public class App extends Application {
     private ComboBox<String> chooseInstructorComboBox;  // Declare chooseInstructorComboBox as a class variable
     private ComboBox<String> chooseCourseComboBox;       // Declare chooseCourseComboBox as a class variable
     
-    // Instance variables
+    // Instance variables for the Student form
     private TextField studentNameTextField;
     private ComboBox<String> studentYearComboBox;
     private TextField studentMajorTextField;
     private TextField studentGPATextField;
     private TextField studentEmailTextField;
+    
+    // Instance variables for the course form
+    private TextField courseNameTextField;
+    private ComboBox<String> courseBuildingComboBox;
+    private TextField courseRoomTextField;
+    private TextField courseCapacityTextField;
+    
+    // Instance variables for the instructor form
+    private TextField instructorNameTextField;
+    private ComboBox<String> instructorPrefixComboBox;
+    private TextField instructorDepartmentTextField;
+    private TextField instructorOfficeTextField;
+    private TextField instructorEmailTextField;
     
     // Method used to check if the boxes are filled before you can click the add student button
     private void validateAndEnableButton(Button button) {
@@ -66,6 +79,27 @@ public class App extends Application {
                 !studentMajorTextField.getText().isEmpty() &&
                 !studentGPATextField.getText().isEmpty() &&
                 !studentEmailTextField.getText().isEmpty();
+
+        button.setDisable(!isFilled);
+    }
+    
+    // Method used to check if the boxes are filled before you can click the add Course button
+    private void validateAndEnableCourseButton(Button button) {
+        boolean isFilled = !courseNameTextField.getText().isEmpty() &&
+                courseBuildingComboBox.getValue() != null &&
+                !courseRoomTextField.getText().isEmpty() &&
+                !courseCapacityTextField.getText().isEmpty();
+
+        button.setDisable(!isFilled);
+    }
+    
+    // Method used to check if the boxes are filled before you can click the add Instructor button
+    private void validateAndEnableInstructorButton(Button button) {
+        boolean isFilled = !instructorNameTextField.getText().isEmpty() &&
+                instructorPrefixComboBox.getValue() != null &&
+                !instructorDepartmentTextField.getText().isEmpty() &&
+                !instructorOfficeTextField.getText().isEmpty() &&
+                !instructorEmailTextField.getText().isEmpty();
 
         button.setDisable(!isFilled);
     }
@@ -147,14 +181,22 @@ public class App extends Application {
         Label courseCapacityLabel = new Label("Capacity:");
 
         // Create text fields for course view
-        TextField courseNameTextField = new TextField();
-        ComboBox<String> courseBuildingComboBox = new ComboBox<>(FXCollections.observableArrayList("Showker", "Chandler", "Buress Hall"));
+        this.courseNameTextField = new TextField();
+        this.courseBuildingComboBox = new ComboBox<>(FXCollections.observableArrayList("Showker", "Chandler", "Buress Hall"));
         courseBuildingComboBox.setPromptText("Select Building"); // Set default prompt text
-        TextField courseRoomTextField = new TextField();
-        TextField courseCapacityTextField = new TextField();
+        this.courseRoomTextField = new TextField();
+        this.courseCapacityTextField = new TextField();
 
         // Create save button for course view
         Button courseSaveButton = new Button("Add Course ->");
+        courseSaveButton.setDisable(true);
+        
+        // Event handling for validation
+        courseNameTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableCourseButton(courseSaveButton));
+        courseRoomTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableCourseButton(courseSaveButton));
+        courseCapacityTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableCourseButton(courseSaveButton));
+        courseBuildingComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateAndEnableCourseButton(courseSaveButton));
+        
         courseSaveButton.setOnAction(event -> {
             // Capture the entered information
             String name = courseNameTextField.getText();
@@ -253,15 +295,25 @@ public class App extends Application {
         Label instructorEmailLabel = new Label("Email:");
 
         // Create text fields for instructor view
-        TextField instructorNameTextField = new TextField();
-        ComboBox<String> instructorPrefixComboBox = new ComboBox<>(FXCollections.observableArrayList("Dr.","Prof.", "Ms.", "Mrs.", "Mr."));
+        this.instructorNameTextField = new TextField();
+        this.instructorPrefixComboBox = new ComboBox<>(FXCollections.observableArrayList("Dr.","Prof.", "Ms.", "Mrs.", "Mr."));
         instructorPrefixComboBox.setPromptText("Select Prefix");
-        TextField instructorDepartmentTextField = new TextField();
-        TextField instructorOfficeTextField = new TextField();
-        TextField instructorEmailTextField = new TextField();
+        this.instructorDepartmentTextField = new TextField();
+        this.instructorOfficeTextField = new TextField();
+        this.instructorEmailTextField = new TextField();
 
         // Create save button for instructor view
         Button instructorSaveButton = new Button("Add Instructor ->");
+        instructorSaveButton.setDisable(true);
+        
+        // Event handling for validation
+        instructorNameTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableInstructorButton(instructorSaveButton));
+        instructorDepartmentTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableInstructorButton(instructorSaveButton));
+        instructorOfficeTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableInstructorButton(instructorSaveButton));
+        instructorEmailTextField.textProperty().addListener((observable, oldValue, newValue) -> validateAndEnableInstructorButton(instructorSaveButton));
+        instructorPrefixComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateAndEnableInstructorButton(instructorSaveButton));
+
+        
         instructorSaveButton.setOnAction(event -> {
             // Capture the entered information
             String name = instructorNameTextField.getText();

@@ -1,4 +1,4 @@
-package hnb.studentmanagement;
+package TMD;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -236,24 +236,24 @@ public class App extends Application {
         removeStudentFromCourseRadioButton.setToggleGroup(studentToggleGroup);
         
         // Event handling for the "Add Student" radio button in the edit course view
-addStudentToCourseRadioButton.setOnAction(event -> {
-    // Enable the ComboBox for choosing a student
-    chooseStudentComboBox.setDisable(false);
+        addStudentToCourseRadioButton.setOnAction(event -> {
+            // Enable the ComboBox for choosing a student
+            chooseStudentComboBox.setDisable(false);
 
-    // Update the ComboBox choices with the student names
-    chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
+            // Update the ComboBox choices with the student names
+            chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
 
-});
+        });
 
 // Event handling for the "Remove Student" radio button in the edit course view
-removeStudentFromCourseRadioButton.setOnAction(event -> {
-    // Enable the ComboBox for choosing a student
-    chooseStudentComboBox.setDisable(false);
+        removeStudentFromCourseRadioButton.setOnAction(event -> {
+            // Enable the ComboBox for choosing a student
+            chooseStudentComboBox.setDisable(false);
 
-    // Update the ComboBox choices with the student names
-    chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
+            // Update the ComboBox choices with the student names
+            chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
 
-});
+        });
 
         // Create label for "Choose Student"
         Label chooseStudentLabel = new Label("Choose Student");
@@ -264,21 +264,20 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
         Label chooseCourseLabel = new Label("Choose Course:");
         chooseCourseComboBox = new ComboBox<>();
         chooseCourseComboBox.setPromptText("Select Course");
-        
+
         // Create checkbox for "New Instructor?"
         CheckBox newInstructorCheckBox = new CheckBox("New Instructor?");
-        
+
         // Create label for "Choose Instructor"
         Label chooseInstructorLabel = new Label("Choose Instructor:");
         chooseInstructorComboBox = new ComboBox<>();
         chooseInstructorComboBox.setPromptText("Select Instructor");
         chooseInstructorComboBox.setDisable(true); //Stops you from accessing the ComboBox until check the checkbox
-        
+
         newInstructorCheckBox.setOnAction(event -> {
             // Enable or disable ComboBox based on the checkbox state
             chooseInstructorComboBox.setDisable(!newInstructorCheckBox.isSelected());
         });
-      
 
         // Create labels for instructor view
         Label instructorTitleLabel = new Label("Add Instructor:");
@@ -290,7 +289,7 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
 
         // Create text fields for instructor view
         this.instructorNameTextField = new TextField();
-        this.instructorPrefixComboBox = new ComboBox<>(FXCollections.observableArrayList("Dr.","Prof.", "Ms.", "Mrs.", "Mr."));
+        this.instructorPrefixComboBox = new ComboBox<>(FXCollections.observableArrayList("Dr.", "Prof.", "Ms.", "Mrs.", "Mr."));
         instructorPrefixComboBox.setPromptText("Select Prefix");
         this.instructorDepartmentTextField = new TextField();
         this.instructorOfficeTextField = new TextField();
@@ -330,73 +329,83 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
             instructorOfficeTextField.clear();
             instructorEmailTextField.clear();
         });
-        
-        
+
         // Add a TextArea for displaying course and student information
         TextArea courseAndStudentInfoTextArea = new TextArea();
         courseAndStudentInfoTextArea.setEditable(false); // Make it read-only
 
         // Create save button for edit course view
         Button editCourseSaveButton = new Button("Save Changes");
-        
+
         editCourseSaveButton.setOnAction(event -> {
-    // Obtain the selected course name from the combo box
-    String selectedCourseName = chooseCourseComboBox.getValue();
+            // Obtain the selected course name from the combo box
+            String selectedCourseName = chooseCourseComboBox.getValue();
 
-    // Find the corresponding Course object in the courseList
-    for (Course course : courseList) {
-        if (course.getName().equals(selectedCourseName)) {
-            selectedCourse = course;
+            // Find the corresponding Course object in the courseList
+            for (Course course : courseList) {
+                if (course.getName().equals(selectedCourseName)) {
+                    selectedCourse = course;
 
-            // Obtain the selected student name from the combo box
-            String selectedStudentName = chooseStudentComboBox.getValue();
+                    // Obtain the selected student name from the combo box
+                    String selectedStudentName = chooseStudentComboBox.getValue();
 
-            if (addStudentToCourseRadioButton.isSelected()) {
-                // Add the selected student to the course
-                for (Student student : studentList) {
-                    if (student.getName().equals(selectedStudentName)) {
-                        // Enroll the student in the course
-                        selectedCourse.enrollStudent(student);
-                        break;
+                    if (addStudentToCourseRadioButton.isSelected()) {
+                        // Add the selected student to the course
+                        for (Student student : studentList) {
+                            if (student.getName().equals(selectedStudentName)) {
+                                // Enroll the student in the course
+                                selectedCourse.enrollStudent(student);
+                                break;
+                            }
+                        }
+                    } else if (removeStudentFromCourseRadioButton.isSelected()) {
+                        // Remove the selected student from the course
+                        for (Student student : selectedCourse.getStudents()) {
+                            if (student.getName().equals(selectedStudentName)) {
+                                selectedCourse.removeStudent(student.getStudentID());
+                                break;
+                            }
+                        }
                     }
-                }
-            } else if (removeStudentFromCourseRadioButton.isSelected()) {
-                // Remove the selected student from the course
-                for (Student student : selectedCourse.getStudents()) {
-                    if (student.getName().equals(selectedStudentName)) {
-                        selectedCourse.removeStudent(student.getStudentID());
-                        break;
+                    
+                    if (newInstructorCheckBox.isSelected()) {
+                        // Obtain the selected instructor name from the combo box
+                        String selectedInstructorName = chooseInstructorComboBox.getValue();
+
+                        // Find the corresponding Instructor object in the instructorList
+                        for (Instructor instructor : instructorList) {
+                            if (instructor.getName().equals(selectedInstructorName)) {
+                                // Assign the selected instructor to the course
+                                selectedCourse.assignInstructor(instructor);
+                                break;
+                            }
+                        }
                     }
+
+                    
+                    // Check if there are students enrolled in the course
+                    List<Student> enrolledStudents = selectedCourse.getStudents();
+                    if (!enrolledStudents.isEmpty()) {
+                        // Display the course and student information in the TextArea
+                        StringBuilder courseInfo = new StringBuilder(selectedCourse.toString());
+                        courseInfo.append("\n\nRoster:\n");
+                        for (Student student : enrolledStudents) {
+                            courseInfo.append(student.toString()).append("\n");
+                        }
+                        courseAndStudentInfoTextArea.setText(courseInfo.toString());
+                    } else {
+                        // Handle the case when the course has no students
+                        courseAndStudentInfoTextArea.setText("No students enrolled in this course.");
+                    }
+
+                    break;
                 }
             }
 
-            // Check if there are students enrolled in the course
-            List<Student> enrolledStudents = selectedCourse.getStudents();
-            if (!enrolledStudents.isEmpty()) {
-                // Display the course and student information in the TextArea
-                StringBuilder courseInfo = new StringBuilder(selectedCourse.toString());
-                courseInfo.append("\n\nRoster:\n");
-                for (Student student : enrolledStudents) {
-                    courseInfo.append(student.toString()).append("\n");
-                }
-                courseAndStudentInfoTextArea.setText(courseInfo.toString());
-            } else {
-                // Handle the case when the course has no students
-                courseAndStudentInfoTextArea.setText("No students enrolled in this course.");
-            }
+            // Clear the fields for the next operation
+            chooseStudentComboBox.getSelectionModel().clearSelection();
+        });
 
-            break;
-        }
-    }
-
-    // Clear the fields for the next operation
-    chooseStudentComboBox.getSelectionModel().clearSelection();
-});
-
-            
-
-
-            
         // Create the layout
         GridPane gridPane = new GridPane();
         gridPane.setHgap(20);
@@ -415,7 +424,7 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
         gridPane.add(studentGPATextField, 1, 4);
         gridPane.add(studentEmailLabel, 0, 5);
         gridPane.add(studentEmailTextField, 1, 5);
-        gridPane.add(studentSaveButton, 1, 6, 1, 1); 
+        gridPane.add(studentSaveButton, 1, 6, 1, 1);
 
         // Add course view components to the grid
         gridPane.add(courseTitleLabel, 2, 0);
@@ -427,7 +436,7 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
         gridPane.add(courseRoomTextField, 3, 3);
         gridPane.add(courseCapacityLabel, 2, 4);
         gridPane.add(courseCapacityTextField, 3, 4);
-        gridPane.add(courseSaveButton, 3, 5, 1, 1); 
+        gridPane.add(courseSaveButton, 3, 5, 1, 1);
 
         // Add instructor view components to the grid
         gridPane.add(instructorTitleLabel, 4, 0);
@@ -451,22 +460,19 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
         gridPane.add(chooseStudentComboBox, 1, 9);
         gridPane.add(chooseCourseLabel, 0, 10);
         gridPane.add(chooseCourseComboBox, 1, 10);
-        gridPane.add(newInstructorCheckBox, 0, 11); 
+        gridPane.add(newInstructorCheckBox, 0, 11);
         gridPane.add(chooseInstructorLabel, 0, 12);
         gridPane.add(chooseInstructorComboBox, 1, 12);
-        gridPane.add(editCourseSaveButton, 0, 13, 1, 1); 
-        
+        gridPane.add(editCourseSaveButton, 0, 13, 1, 1);
+
         // Add TextArea to display course and student information
-        gridPane.add(courseAndStudentInfoTextArea, 3, 9, 3, 9);  
-        
-        
-       
+        gridPane.add(courseAndStudentInfoTextArea, 3, 9, 3, 9);
 
         // Update the ComboBox choices before showing the stage
         chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
         chooseCourseComboBox.setItems(FXCollections.observableArrayList(getCourseNames()));
         chooseInstructorComboBox.setItems(FXCollections.observableArrayList(getInstructorNames()));
-        
+
         // Create the scene
         Scene scene = new Scene(gridPane, 1000, 600);
 
@@ -478,15 +484,13 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
 
         // Show the stage
         stage.show();
-        
-        
+
     }
-    
-  
+
     public static void main(String[] args) {
         launch(args);
     }
-    
+
     //Incomplete, ran out of time while trying to complete the GUI
 //    @Override
 //    public void stop() {
@@ -503,7 +507,6 @@ removeStudentFromCourseRadioButton.setOnAction(event -> {
 //            }
 //        }
 //    }
-
     //We struggled to figure out this part and the stop() method and ran out of time 
     // as we tried to figure out the GUI implementation
     public void loadDataFromDB() {

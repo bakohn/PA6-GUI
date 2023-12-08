@@ -446,4 +446,28 @@ public class App extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+    @Override
+    public void stop() {
+        // For each course
+        for (Course course : courseList) {
+            int courseId = course.getCourseID();  
+
+            // For each student enrolled in that course
+            for (Student student : course.getStudents()) {
+                int studentId = student.getStudentID();  
+
+                // Insert their studentID and that course ID into STUDENTENROLLMENT
+                
+            }
+        }
+    }
+
+
+    public void loadDataFromDB() {
+
+    }
+
+
 }
+

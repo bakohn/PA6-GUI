@@ -35,7 +35,7 @@ public Instructor(String name, String prefix, String officeLocation, String depa
     }  
     
     public String getName() { 
-        return name; 
+        return prefix + " " +name; 
     } 
 
     public void setPrefix(String prefix){ 

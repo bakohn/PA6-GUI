@@ -1,9 +1,10 @@
-package TMD;
+package sv.shenandoah;
 
 /** 
-* Programmer name: Sean Vanderstelt 
-* Date Completed: 11/16/2023 
-* PA purpose: To define the Student class to add students with correct information to the management system. 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 12/7/2023 
+* PA purpose: Create the student class
+
 * My submission of this program indicates that I have neither received nor given  
 * substantial or unauthorized assistance in writing this program. 
 */ 
@@ -59,8 +60,9 @@ public class Student {
         return GPA; 
     } 
     
+    //Combine first and last name
     public String getName() { 
-        return lastName + ", " + firstName;  
+        return firstName + " " + lastName; 
     } 
 
     public int getStudentID() { 

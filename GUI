@@ -18,6 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import static javafx.application.Application.launch;
 
+/** 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 12/7/2023 
+* PA purpose: Create the GUI for the student management system 
+
+* My submission of this program indicates that I have neither received nor given  
+* substantial or unauthorized assistance in writing this program. 
+*/ 
+
 public class App extends Application {
     private Course selectedCourse;
     private ArrayList<Student> studentList = new ArrayList<>();

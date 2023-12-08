@@ -1,4 +1,4 @@
-package sv.shenandoah;
+package TMD;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -16,14 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/** 
-* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
-* Date Completed: 12/7/2023 
-* PA purpose: To define the Student class to add students with correct information to the management system. 
-* My submission of this program indicates that I have neither received nor given  
-* substantial or unauthorized assistance in writing this program. 
-*/ 
+import static javafx.application.Application.launch;
 
 public class App extends Application {
     private Course selectedCourse;
@@ -31,7 +24,7 @@ public class App extends Application {
     private ArrayList<Instructor> instructorList = new ArrayList<>();
     private ArrayList<Course> courseList = new ArrayList<>();
 
-    //get student names in "last name, first name" format
+    // Helper method to get student names in "last name, first name" format
     private List<String> getStudentNames() {
         List<String> studentNames = new ArrayList<>();   
         for (Student student : studentList) {
@@ -40,7 +33,6 @@ public class App extends Application {
         return studentNames;
     }
     
-    //Get the course names
     private List<String> getCourseNames() {
         List<String> courseNames = new ArrayList<>();
         for (Course course : courseList) {
@@ -49,7 +41,6 @@ public class App extends Application {
         return courseNames;
     }
     
-    //Get the instructor names
     private List<String> getInstructorNames() {
         List<String> instructorNames = new ArrayList<>();
         for (Instructor instructor : instructorList) {
@@ -58,10 +49,9 @@ public class App extends Application {
         return instructorNames;
     }
     
-    //Create a combo box for each class type
     private ComboBox<String> chooseStudentComboBox;
-    private ComboBox<String> chooseInstructorComboBox;  
-    private ComboBox<String> chooseCourseComboBox;       
+    private ComboBox<String> chooseInstructorComboBox;  // Declare chooseInstructorComboBox as a class variable
+    private ComboBox<String> chooseCourseComboBox;       // Declare chooseCourseComboBox as a class variable
     
     // Instance variables for the Student form
     private TextField studentNameTextField;
@@ -83,7 +73,6 @@ public class App extends Application {
     private TextField instructorOfficeTextField;
     private TextField instructorEmailTextField;
     
-    //Method to check if email has '@'
     private boolean isValidEmail(String email) {
     return email.contains("@");
 }
@@ -199,7 +188,7 @@ public class App extends Application {
         // Create text fields for course view
         this.courseNameTextField = new TextField();
         this.courseBuildingComboBox = new ComboBox<>(FXCollections.observableArrayList("Showker", "Chandler", "Buress Hall"));
-        courseBuildingComboBox.setPromptText("Select Building");
+        courseBuildingComboBox.setPromptText("Select Building"); // Set default prompt text
         this.courseRoomTextField = new TextField();
         this.courseCapacityTextField = new TextField();
 
@@ -262,46 +251,13 @@ public class App extends Application {
         Label chooseInstructorLabel = new Label("Choose Instructor:");
         chooseInstructorComboBox = new ComboBox<>();
         chooseInstructorComboBox.setPromptText("Select Instructor");
-        //Stops you from accessing the ComboBox until check the checkbox
-        chooseInstructorComboBox.setDisable(true); 
+        chooseInstructorComboBox.setDisable(true); //Stops you from accessing the ComboBox until check the checkbox
         
         newInstructorCheckBox.setOnAction(event -> {
             // Enable or disable ComboBox based on the checkbox state
             chooseInstructorComboBox.setDisable(!newInstructorCheckBox.isSelected());
         });
       
-        
-        // Add a TextArea for displaying course and student information
-        TextArea courseAndStudentInfoTextArea = new TextArea();
-        courseAndStudentInfoTextArea.setEditable(false); 
-
-        // Create save button for edit course view
-        Button editCourseSaveButton = new Button("Save Changes");
-        editCourseSaveButton.setOnAction(event -> {
-        // Obtain the selected course name from the combo box
-        String selectedCourseName = chooseCourseComboBox.getValue();
-
-    // Find the corresponding Course object in the courseList
-    for (Course course : courseList) {
-        if (course.getName().equals(selectedCourseName)) {
-            selectedCourse = course;
-            break;
-        }
-    }
-    if (selectedCourse != null) {
-        String courseInfo = selectedCourse.toString();
-            String studentInfo = selectedCourse.getRoster(); 
-
-        // Populate the TextArea
-        courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo);
-    } else {
-        // Handle the case when no course is selected
-        courseAndStudentInfoTextArea.setText("No course selected.");
-    }
-
-    // Clear the fields for the next operation
-    chooseStudentComboBox.getSelectionModel().clearSelection();
-});
 
         // Create labels for instructor view
         Label instructorTitleLabel = new Label("Add Instructor:");
@@ -353,7 +309,54 @@ public class App extends Application {
             instructorOfficeTextField.clear();
             instructorEmailTextField.clear();
         });
+        
+        
+        // Add a TextArea for displaying course and student information
+        TextArea courseAndStudentInfoTextArea = new TextArea();
+        courseAndStudentInfoTextArea.setEditable(false); // Make it read-only
 
+        // Create save button for edit course view
+        Button editCourseSaveButton = new Button("Save Changes");
+        
+        editCourseSaveButton.setOnAction(event -> {
+            // Obtain the selected course name from the combo box
+            String selectedCourseName = chooseCourseComboBox.getValue();
+
+            // Find the corresponding Course object in the courseList
+            for (Course course : courseList) {
+                if (course.getName().equals(selectedCourseName)) {
+                    selectedCourse = course;
+                    break;
+                }
+            }
+
+            if (selectedCourse != null) {
+                // Check if there are students enrolled in the course
+                if (!selectedCourse.getStudents().isEmpty()) {
+                    // Display the course and student information in the TextArea
+                    String courseInfo = selectedCourse.toString();
+                    String studentInfo = selectedCourse.getRoster();
+                    Instructor courseInstructor = selectedCourse.getInstructor();
+                    String instructorInfo = (courseInstructor != null) ? courseInstructor.toString() : "No Instructor Assigned";
+
+                    courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo + "\n\n" + instructorInfo);
+                } else {
+                    // Handle the case when the course has no students
+                    courseAndStudentInfoTextArea.setText("No students enrolled in this course.");
+                }
+            } else {
+                // Handle the case when no course is selected
+                courseAndStudentInfoTextArea.setText("No course selected.");
+            }
+
+            // Clear the fields for the next operation
+            chooseStudentComboBox.getSelectionModel().clearSelection();
+        });
+
+            
+
+
+            
         // Create the layout
         GridPane gridPane = new GridPane();
         gridPane.setHgap(20);
@@ -414,13 +417,10 @@ public class App extends Application {
         gridPane.add(editCourseSaveButton, 0, 13, 1, 1); 
         
         // Add TextArea to display course and student information
-        gridPane.add(courseAndStudentInfoTextArea, 3, 9, 3, 9);       
-        // Update the editCourseSaveButton action to populate the TextArea
-        editCourseSaveButton.setOnAction(event -> {
-        String courseInfo = selectedCourse.toString();
-        String studentInfo = selectedCourse.getRoster(); 
-        courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo);
-        });
+        gridPane.add(courseAndStudentInfoTextArea, 3, 9, 3, 9);  
+        
+        
+       
 
         // Update the ComboBox choices before showing the stage
         chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
@@ -445,10 +445,5 @@ public class App extends Application {
   
     public static void main(String[] args) {
         launch(args);
-    }
-    
-    @Override
-    public void stop() {
-        
     }
 }

@@ -1,5 +1,7 @@
+package TMD;
+
 /** 
-* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Programmer name: Sean Vanderstelt 
 * Date Completed: 11/16/2023 
 * PA purpose: To define the Student class to add students with correct information to the management system. 
 * My submission of this program indicates that I have neither received nor given  
@@ -15,61 +17,42 @@ public class Student {
     private double GPA; 
     private String studentEmail; 
     private int studentID; 
-    private static int nextStudentID = 100; 
+    private static int nextStudentID = 1; 
 
     public Student(String name, String year, String major, double GPA, String email)  
 
     { 
         //Did some research to learn about the split method. 
-        //Do not use methods in constructor, find a different way to split.
         String[] firstandlast = name.split(" "); 
         this.firstName = firstandlast[0]; 
         this.lastName = firstandlast[1]; 
          
         this.studentID = nextStudentID; 
         studentMajor = major; 
-        
-        if (GPA >= 0 && GPA <= 5) {
-            this.GPA = GPA;
-        } else {
-            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
-        }
-        
-        if (email.contains('@')) {
-            this.email = email;
-        } else {
-            System.out.println("Invalid input. Please enter email with @");
-        }
-    }
-        
         studentEmail = email; 
         nextStudentID++; 
 
-        // switch (year) { 
-           // case 1: 
-                // this.studentYear = "Freshman"; 
-                // break; 
-            // case 2: 
-                // this.studentYear = "Sophomore"; 
-                // break; 
-            // case 3: 
-                // this.studentYear = "Junior"; 
-                // break; 
-            // case 4: 
-                // this.studentYear = "Senior"; 
-                // break; 
-            // default: 
-                // this.studentYear = "Invalid Year";
+        //switch (year) { 
+            //case 1: 
+                //this.studentYear = "Freshman"; 
+                //break; 
+            //case 2: 
+                //this.studentYear = "Sophomore"; 
+                //break; 
+            //case 3: 
+                //this.studentYear = "Junior"; 
+                //break; 
+            //case 4: 
+                //this.studentYear = "Senior"; 
+                //break; 
+            //default: 
+                //this.studentYear = "Invalid Year";
 
-        // } 
+        //} 
     }
 
     public void setGPA (double GPA) { 
-        if (GPA >= 0 && GPA <= 5) {
-            this.GPA = GPA;
-        } else {
-            System.out.println("Invalid input. Please enter a GPA between 0.0 and 5.0");
-        }
+            this.GPA = GPA; 
     }
     
     public double getGPA() { 
@@ -86,11 +69,7 @@ public class Student {
     } 
 
     public void setStudentEmail(String email) { 
-        if (email.contains('@')) {
-            this.email = email;
-        } else {
-            System.out.println("Invalid input. Please enter email with @");
-        } 
+            this.studentEmail = email; 
     } 
     
     public String getStudentYear() { 

@@ -1,3 +1,5 @@
+package TMD;
+
 /** 
 * Programmer name: Tyler D'Ambrosio
 * Date Completed: 11/16/2023 
@@ -24,11 +26,6 @@ public Instructor(String name, String prefix, String officeLocation, String depa
        this.officeLocation = officeLocation; 
        this.department = department; 
        this.email = email; 
-       if (!email.contains("@")) {//Checks if there is an @ symbol and notifies the user if there isn’t one 
-            System.out.println("Warning: Email should contain '@'"); 
-        } else { 
-            this.email = email; 
-        } 
        this.instructorID = instructorID; 
        this.nextInstructID = nextInstructID; 
     } 

@@ -1,4 +1,4 @@
-package sv.shenandoah;
+package hnb.studentmanagement;
 
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
@@ -123,9 +123,6 @@ public class App extends Application {
         
         // Create toggle group for student operations
         ToggleGroup studentToggleGroup = new ToggleGroup();
-
-        RadioButton removeStudentRadioButton = new RadioButton("Remove Student");
-        removeStudentRadioButton.setToggleGroup(studentToggleGroup);
         
         // Create labels for student view
         Label studentTitleLabel = new Label("Add Student:");
@@ -237,6 +234,26 @@ public class App extends Application {
 
         RadioButton removeStudentFromCourseRadioButton = new RadioButton("Remove Student");
         removeStudentFromCourseRadioButton.setToggleGroup(studentToggleGroup);
+        
+        // Event handling for the "Add Student" radio button in the edit course view
+addStudentToCourseRadioButton.setOnAction(event -> {
+    // Enable the ComboBox for choosing a student
+    chooseStudentComboBox.setDisable(false);
+
+    // Update the ComboBox choices with the student names
+    chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
+
+});
+
+// Event handling for the "Remove Student" radio button in the edit course view
+removeStudentFromCourseRadioButton.setOnAction(event -> {
+    // Enable the ComboBox for choosing a student
+    chooseStudentComboBox.setDisable(false);
+
+    // Update the ComboBox choices with the student names
+    chooseStudentComboBox.setItems(FXCollections.observableArrayList(getStudentNames()));
+
+});
 
         // Create label for "Choose Student"
         Label chooseStudentLabel = new Label("Choose Student");
@@ -323,39 +340,58 @@ public class App extends Application {
         Button editCourseSaveButton = new Button("Save Changes");
         
         editCourseSaveButton.setOnAction(event -> {
-            // Obtain the selected course name from the combo box
-            String selectedCourseName = chooseCourseComboBox.getValue();
+    // Obtain the selected course name from the combo box
+    String selectedCourseName = chooseCourseComboBox.getValue();
 
-            // Find the corresponding Course object in the courseList
-            for (Course course : courseList) {
-                if (course.getName().equals(selectedCourseName)) {
-                    selectedCourse = course;
-                    break;
+    // Find the corresponding Course object in the courseList
+    for (Course course : courseList) {
+        if (course.getName().equals(selectedCourseName)) {
+            selectedCourse = course;
+
+            // Obtain the selected student name from the combo box
+            String selectedStudentName = chooseStudentComboBox.getValue();
+
+            if (addStudentToCourseRadioButton.isSelected()) {
+                // Add the selected student to the course
+                for (Student student : studentList) {
+                    if (student.getName().equals(selectedStudentName)) {
+                        // Enroll the student in the course
+                        selectedCourse.enrollStudent(student);
+                        break;
+                    }
+                }
+            } else if (removeStudentFromCourseRadioButton.isSelected()) {
+                // Remove the selected student from the course
+                for (Student student : selectedCourse.getStudents()) {
+                    if (student.getName().equals(selectedStudentName)) {
+                        selectedCourse.removeStudent(student.getStudentID());
+                        break;
+                    }
                 }
             }
 
-            if (selectedCourse != null) {
-                // Check if there are students enrolled in the course
-                if (selectedCourse.getStudents().isEmpty()) {
-                    // Display the course and student information in the TextArea
-                    String courseInfo = selectedCourse.toString();
-                    String studentInfo = selectedCourse.getRoster();
-                    Instructor courseInstructor = selectedCourse.getInstructor();
-//                    String instructorInfo = (courseInstructor != null) ? courseInstructor.toString() : "No Instructor Assigned";
-
-                    courseAndStudentInfoTextArea.setText(courseInfo + "\n\n" + studentInfo + "\n\n");
-                } else {
-                    // Handle the case when the course has no students
-                    courseAndStudentInfoTextArea.setText("No students enrolled in this course.");
+            // Check if there are students enrolled in the course
+            List<Student> enrolledStudents = selectedCourse.getStudents();
+            if (!enrolledStudents.isEmpty()) {
+                // Display the course and student information in the TextArea
+                StringBuilder courseInfo = new StringBuilder(selectedCourse.toString());
+                courseInfo.append("\n\nRoster:\n");
+                for (Student student : enrolledStudents) {
+                    courseInfo.append(student.toString()).append("\n");
                 }
+                courseAndStudentInfoTextArea.setText(courseInfo.toString());
             } else {
-                // Handle the case when no course is selected
-                courseAndStudentInfoTextArea.setText("No course selected.");
+                // Handle the case when the course has no students
+                courseAndStudentInfoTextArea.setText("No students enrolled in this course.");
             }
 
-            // Clear the fields for the next operation
-            chooseStudentComboBox.getSelectionModel().clearSelection();
-        });
+            break;
+        }
+    }
+
+    // Clear the fields for the next operation
+    chooseStudentComboBox.getSelectionModel().clearSelection();
+});
 
             
 
@@ -452,28 +488,25 @@ public class App extends Application {
     }
     
     //Incomplete, ran out of time while trying to complete the GUI
-    @Override
-    public void stop() {
-        // For each course
-        for (Course course : courseList) {
-            int courseId = course.getCourseID();  
-
-            // For each student enrolled in that course
-            for (Student student : course.getStudents()) {
-                int studentId = student.getStudentID();  
-
-                // Insert their studentID and that course ID into STUDENTENROLLMENT
-                
-            }
-        }
-    }
+//    @Override
+//    public void stop() {
+//        // For each course
+//        for (Course course : courseList) {
+//            int courseId = course.getCourseID();  
+//
+//            // For each student enrolled in that course
+//            for (Student student : course.getStudents()) {
+//                int studentId = student.getStudentID();  
+//
+//                // Insert their studentID and that course ID into STUDENTENROLLMENT
+//                
+//            }
+//        }
+//    }
 
     //We struggled to figure out this part and the stop() method and ran out of time 
     // as we tried to figure out the GUI implementation
     public void loadDataFromDB() {
 
     }
-
-
 }
-

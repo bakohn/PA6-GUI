@@ -1,9 +1,10 @@
 package sv.shenandoah;
 
 /** 
-* Programmer name: Hayden Bako
-* Date Completed: 11/16/2023 
-* PA purpose: To define the Course class to add course with correct information to the management system. 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 12/7/2023 
+* PA purpose: Create the course class
+
 * My submission of this program indicates that I have neither received nor given  
 * substantial or unauthorized assistance in writing this program. 
 */ 
@@ -53,6 +54,10 @@ public class Course {
         return false;
     }
 
+    public int getCourseID() {
+        return nextCourseID;
+    }
+    
     public void assignInstructor(Instructor newInstr) {
         this.courseInstructor = newInstr;
     }

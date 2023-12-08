@@ -1,4 +1,4 @@
-package TMD;
+package sv.shenandoah;
 
 /** 
 * Programmer name: Hayden Bako
@@ -105,7 +105,7 @@ public class Course {
     
     //checks if course has students, and if so, returns a roster of student objects.
     public String getRoster() {
-        if (enrolledStudents.isEmpty()) {
+        if (!enrolledStudents.isEmpty()) {
             return "Course Has No Students Currently Enrolled.";
         }
         StringBuilder roster = new StringBuilder("Roster for " + courseName + ":\n");

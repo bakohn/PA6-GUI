@@ -124,11 +124,6 @@ public class App extends Application {
         // Create toggle group for student operations
         ToggleGroup studentToggleGroup = new ToggleGroup();
 
-        // Create radio buttons for student operations
-        RadioButton addStudentRadioButton = new RadioButton("Add Student");
-        addStudentRadioButton.setToggleGroup(studentToggleGroup);
-        addStudentRadioButton.setSelected(true);
-
         RadioButton removeStudentRadioButton = new RadioButton("Remove Student");
         removeStudentRadioButton.setToggleGroup(studentToggleGroup);
         

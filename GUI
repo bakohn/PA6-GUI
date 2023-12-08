@@ -456,6 +456,7 @@ public class App extends Application {
         launch(args);
     }
     
+    //Incomplete, ran out of time while trying to complete the GUI
     @Override
     public void stop() {
         // For each course
@@ -472,7 +473,8 @@ public class App extends Application {
         }
     }
 
-
+    //We struggled to figure out this part and the stop() method and ran out of time 
+    // as we tried to figure out the GUI implementation
     public void loadDataFromDB() {
 
     }

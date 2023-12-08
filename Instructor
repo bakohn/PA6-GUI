@@ -1,9 +1,10 @@
-package TMD;
+package sv.shenandoah;
 
 /** 
-* Programmer name: Tyler D'Ambrosio
-* Date Completed: 11/16/2023 
-* PA purpose: To define the Instructor class to add instructors with correct information to the management system. 
+* Programmer name: Hayden Bako, Tyler D'Ambrosio, Sean Vanderstelt 
+* Date Completed: 12/7/2023 
+* PA purpose: Create the instructor class
+
 * My submission of this program indicates that I have neither received nor given  
 * substantial or unauthorized assistance in writing this program. 
 */ 
@@ -35,7 +36,7 @@ public Instructor(String name, String prefix, String officeLocation, String depa
     }  
     
     public String getName() { 
-        return prefix + " " + name; 
+        return name; 
     } 
 
     public void setPrefix(String prefix){ 
